@@ -56,6 +56,21 @@ class LandcoverDataProcessor:
             subprocess.run(upload_command, check=True)
 
 
+class GEEImageLoader:
+    def __init__(self, collection_name):
+        self.collection = ee.ImageCollection(collection_name)
+
+    def get_first_and_last_images(self):
+        sorted_collection = self.collection.sort("system:time_start")
+        first_image = sorted_collection.first()
+        last_image = sorted_collection.sort("system:time_start", False).first()
+        return first_image, last_image
+
+    def select_image_by_date(self, start_date, end_date):
+        selected_image = self.collection.filterDate(start_date, end_date)
+        return selected_image
+
+
 class MapRenderer:
     def __init__(self, center, zoom):
         self.map = Map(center=center, zoom=zoom)
