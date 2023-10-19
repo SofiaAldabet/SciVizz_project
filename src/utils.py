@@ -66,8 +66,8 @@ class GEEImageLoader:
         last_image = sorted_collection.sort("system:time_start", False).first()
         return first_image, last_image
 
-    def select_image_by_date(self, start_date, end_date):
-        selected_image = self.collection.filterDate(start_date, end_date)
+    def select_images_by_date(self, start_date, end_date):
+        selected_image = ee.Image(self.collection.filterDate(start_date, end_date).first())
         return selected_image
 
 
