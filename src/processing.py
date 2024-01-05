@@ -79,7 +79,24 @@ class LandcoverAnalyzer:
         colors = [self.class_colors[key] for key in self.data.keys()]
         percentages = [100 * value / total for value in values]
 
-        return  labels, percentages, colors      
+        return  labels, percentages, colors  
+
+    def get_pie_chart_plotly(self, title): 
+        """
+        Returns a pie chart of the land cover data using the Plotly library.
+
+        Args:
+            title (str): The title of the pie chart.
+
+        Returns:
+            plotly.graph_objects.Figure: A Plotly figure object.
+        """
+        labels, percentages, colors  = self._prepare_data()
+
+        fig = go.Figure(data=[go.Pie(labels=labels, values=percentages, marker=dict(colors=colors))])
+        fig.update_layout(title=title, width=1200, height=600)
+        return fig
+
     
     def display_pie_chart_matplotlib(self, title):
         """
@@ -102,10 +119,7 @@ class LandcoverAnalyzer:
         Args:
             title (str): The title of the pie chart.
         """
-        labels, percentages, colors  = self._prepare_data()
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=percentages, marker=dict(colors=colors))])
-        fig.update_layout(title=title, width=1200, height=600)
+        fig = self.get_pie_chart_plotly(title)
         fig.show()
 
     @property
